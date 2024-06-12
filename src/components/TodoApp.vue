@@ -46,21 +46,7 @@ const updateTaskStatus = (task) => {
 };
 
 
-// // Liste des tâches
-// const tasks = ref([]);
-// // Ajoute une tâche à la liste
-// const addTask = (task) => {
-//     tasks.value.unshift({ "task": task, "status": 'À faire' });
-// };
-// // Modification d'une tâche
-// const updateTask = (task) => {
-//     const index = tasks.value.findIndex(t => t.task === task.task && t.status === task.status);
-//     tasks.value[index] = task;
-// }
-// // Suppression d'une tâche
-// const deleteTask = (taskIndex) => {
-//     tasks.value.splice(taskIndex, 1);
-// }
+
 
 </script>
 <style scoped>
