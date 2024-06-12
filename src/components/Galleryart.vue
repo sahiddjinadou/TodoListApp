@@ -171,6 +171,12 @@
             </div>
         </div>
     </div>
+    <listBdd />
+
 </template>
 
-<script setup></script>
+<script setup>
+import listBdd from '@/components/listBdd.vue';
+
+
+</script>
