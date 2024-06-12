@@ -1,8 +1,20 @@
 <template>
     <!-- component -->
-    <div class="flex min-h-screen w-full flex-wrap content-center justify-center p-5 bg-gray-200">
+    <div class="min-h-screen w-full content-center justify-center p-5 bg-gray-200">
+        <div class="flex justify-center items-center gap-5">
+            <div class="flex justify-center items-center gap-5 ">
+                <button class="border border-green-500 rounded-md py-1 px-2">Voitures</button>
+                <button class="border border-green-500 rounded-md py-1 px-2">Motars</button>
+                <button class="border border-green-500 rounded-md py-1 px-2">Animaux</button>
+            </div>
+
+            <div>
+                <input class="rounded-md text-center h-7" type="search" placeholder="Recherche..."
+                v-model="searchVal">
+            </div>
+        </div>
         <div class="grid grid-cols-4 gap-3">
-            <div v-for="car in cars" :key="car.id" class="w-96 bg-white p-3">
+            <div v-for="car in filteredItems" :key="car.id" class="w-96 bg-white p-3">
                 <img class="h-52 w-full object-cover" :src="car.image"/>
                 <ul class="mt-3 flex flex-wrap">
                     <li class="mr-auto">
@@ -57,7 +69,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="car in cars" :key="car.id">
+          <tr v-for="car in filteredItems" :key="car.id">
             <td>{{ car.id }}</td>
             <td>{{ car.nom }}</td>
             <td>{{ car.categorie }}</td>
@@ -69,8 +81,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
   
+    const searchVal = ref('')
+
+    
   // Définir les données pour les voitures
   const cars = ref([
     { id: 1, nom: 'Tesla Model S', categorie: 'Electrique', image:'../../public/img/Tesla_Model_S.webp'},
@@ -94,6 +109,17 @@ import { ref } from 'vue';
     { id: 19, nom: 'Ford Mustang', categorie: 'Sport', image:'../../public/img/Ford_Mustang.jpg' },
     { id: 20, nom: 'Kia Sorento', categorie: 'SUV', image:'../../public/img/Kia_Sorento.jpg' }
   ]);
+
+
+    const filteredItems = computed(() => {
+      const query = searchVal.value.toLowerCase();
+      console.log(query);
+      return cars.value.filter(item =>
+        item.nom.toLowerCase().includes(query)
+      );
+    });
+
+
   </script>
   
   <style scoped>
