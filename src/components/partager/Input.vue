@@ -1,6 +1,6 @@
 <template>
-    <div>
-      <input :value="modelValue" @input="$emit('update:modelValue', $event.target.value)" :placeholder="placeholder" />
+    <div class="border-2  ">
+      <input :value="modelValue" @input="$emit('update:modelValue', $event.target.value)" :placeholder="placeholder" class=" p-2 border rounded-md  block w-full" />
     </div>
   </template>
   

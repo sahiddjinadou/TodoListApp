@@ -1,6 +1,6 @@
 <template>
-    <div>
-      <h2>Step 4</h2>
+    <div class="flex flex-col gap-4">
+      <h2 class="text-center font-bold text-2xl" >Step 4</h2>
       <p>First Name: {{ formData.firstName }}</p>
       <p>Last Name: {{ formData.lastName }}</p>
       <p>Email: {{ formData.email }}</p>
@@ -8,8 +8,6 @@
       <p>Address: {{ formData.address }}</p>
       <p>City: {{ formData.city }}</p>
       <p>Zip: {{ formData.zip }}</p>
-      <Button @click="prevStep">Previous</Button>
-      <Button @click="submitForm">Submit</Button>
     </div>
   </template>
   

@@ -1,6 +1,6 @@
 <template>
     <!-- input -->
-    <div class="flex mt-5 items-center justify-center w-full">
+    <div class="flex mt-5  justify-center w-full ">
         <input type="text" v-model="task" @keyup.enter="nouvelleTask" placeholder="Entrer une tâche..."
             class="px-3 rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500 w-full" />
         <button type="submit" @click="nouvelleTask"

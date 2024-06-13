@@ -1,31 +1,17 @@
 <template>
-    <div>
-      <h2>Step 1</h2>
-      <Input v-model="localFormData.firstName" placeholder="First Name" />
-      <Input v-model="localFormData.lastName" placeholder="Last Name" />
+    <div class="flex flex-col gap-4">
+      <h2 class="text-center font-bold text-2xl">Step 1</h2>
+      <Input placeholder="First Name" />
+      <Input  placeholder="Last Name" />
       <Button @click="nextStep">Next</Button>
     </div>
   </template>
   
-  <script>
-  import { ref, watch } from 'vue';
-  import { useForm } from '../../composables/useForm';
-  import Input from '../partager/Input.vue';
-  import Button from '../partager/Button.vue';
+  <script setup>
+  import Button from "@/components/partager/Button.vue";
+  import Input from "@/components/partager/Input.vue";
+
   
-  export default {
-    components: { Input, Button },
-    setup() {
-      const { formData, updateFormData, nextStep } = useForm();
-      const localFormData = ref({ firstName: '', lastName: '' });
-  
-      watch(localFormData, () => {
-        updateFormData(localFormData.value);
-      });
-  
-      return { localFormData, nextStep };
-    },
-  };
   </script>
   
   <style scoped>

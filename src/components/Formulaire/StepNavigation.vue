@@ -1,32 +1,27 @@
 <template>
-  <div>
-    <Step1 v-if="currentStep === 1" />
-    <Step2 v-if="currentStep === 2" />
-    <Step3 v-if="currentStep === 3" />
-    <Step4 v-if="currentStep === 4" />
-    <!-- <Button v-if="currentStep > 1" @click="prevStep">Previous</Button>
-    <Button v-if="currentStep < 4" @click="nextStep">Next</Button> -->
+  <div class="flex flex-col gap-6 pt-6">
+    <h2 class="text-3xl text-gray-400 text-center font-bold">Formulaire</h2>
+    <form action="" class=" flex flex-col items-center gap-4">
+      <Step1  class="min-w-[60%] "/> 
+      <Step2  class="min-w-[60%]"/> 
+      <Step3  class="min-w-[60%]"/> 
+      <Step4  class="min-w-[60%]"/>
+      <Button class="min-w-[60%]" >Soumettre</Button>
+
+    </form>
   </div>
 </template>
   
-  <script>
-import { useForm } from "../../composables/useForm";
-import Button from "../partager/Button.vue";
-import Step1 from "./Step1.vue";
-import Step2 from "./Step2.vue";
-import Step3 from "./Step3.vue";
-import Step4 from "./Step4.vue";
-
-export default {
-  components: { Button,Step1, Step2, Step3, Step4 },
-  setup() {
-    const { currentStep, nextStep, prevStep } = useForm();
-    return { currentStep, nextStep, prevStep };
-  },
-};
+<script setup>
+import Step1 from "@/components/Formulaire/Step1.vue";
+import Step2 from "@/components/Formulaire/Step2.vue";
+import Step3 from "@/components/Formulaire/Step3.vue";
+import Step4 from "@/components/Formulaire/Step4.vue";
+import Button from "@/components/partager/Button.vue";
 </script>
   
-  <style scoped>
+
+<style scoped>
 /* Ajoutez vos styles ici */
 </style>
   

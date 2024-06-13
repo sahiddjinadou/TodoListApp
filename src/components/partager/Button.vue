@@ -1,12 +1,11 @@
 <template>
-    <button @click="$emit('click')">
+    <button  class="px-4 py-1 border bg-neutral-500 rounded-md text-white hover:bg-slate-300 hover:text-black">
       <slot></slot>
     </button>
   </template>
   
   <script>
-  export default {
-  };
+ 
   </script>
   
   <style scoped>
