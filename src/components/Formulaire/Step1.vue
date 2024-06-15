@@ -1,22 +1,14 @@
 <template>
     <div class="flex flex-col gap-4">
       <h2 class="text-center font-bold text-2xl">Step 1</h2>
-      <Input v-model="nom" placeholder="First Name" />
-      <Input v-model="prenom" placeholder="Last Name" />
-      <Button @click="nextStep">Next</Button>
+      <input  placeholder="First Name" required v-model="formValues.firstName"/>
+      <input  placeholder="Last Name" required v-model="formValues.lastName"/>
     </div>
   </template>
   
 <script setup>
-  import { ref, watch } from "vue";
-  import Button from "@/components/partager/Button.vue";
-  import Input from "@/components/partager/Input.vue";
-const nom = ref("")
-const prenom = ref("")
+  const props = defineProps(['formValues']);
 
-watch(nom , (newNom)=>{
-  console.log(nom.value);
-})
 </script>
   
   <style scoped>
