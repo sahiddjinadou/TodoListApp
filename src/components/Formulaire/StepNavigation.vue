@@ -18,6 +18,12 @@ import Step2 from "@/components/Formulaire/Step2.vue";
 import Step3 from "@/components/Formulaire/Step3.vue";
 import Step4 from "@/components/Formulaire/Step4.vue";
 import Button from "@/components/partager/Button.vue";
+import { ref } from "vue";
+
+const user = ref({
+  firstName:"",
+  lastName: ""
+})
 </script>
   
 
