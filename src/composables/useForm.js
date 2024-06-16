@@ -1,9 +1,9 @@
-import { reactive, computed } from 'vue';
+import { ref, computed } from 'vue';
 
 
 export default function useForm() {
 
-  const formData = reactive({
+  const formData = ref({
     firstName: '',
     lastName: '',
     email: '',

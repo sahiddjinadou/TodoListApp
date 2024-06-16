@@ -11,7 +11,7 @@
 
 
   const props = defineProps(['formValues']);
-  
+  console.log(props.formValues);
   </script>
   
   <style scoped>

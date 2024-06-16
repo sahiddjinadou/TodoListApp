@@ -13,10 +13,10 @@
         </component> -->
         <router-view :formValues="formData"></router-view>
       </form>
-
+      <span>{{ veryfPassNextStep }}</span>
       <div class="button">
         <button @click="prevStep" v-if="currentStepIndex != 0" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Prev</button>
-        <button @click="nextStep" v-if="currentStepIndex != (steps.length -1)" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Next</button>
+        <button @click="nextStep" v-if="currentStepIndex != (steps.length -1) && veryfPassNextStep !== false" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Next</button>
       </div>
 
       <div class="soumettre">
@@ -27,7 +27,7 @@
 </template>
   
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 
 
@@ -49,6 +49,11 @@ const step = ref(0);
 const arrayComponent = [Step1, Step2, Step3, Step4];
 const steps = ['etap1', 'etap2', 'etap3', 'etap4'];
 
+const veryfPassNextStep = ref(false);
+console.log(veryfPassNextStep);
+
+
+
 const currentStepIndex = computed(() => {
   return steps.indexOf(route.path.split('/').pop());
 });
@@ -64,7 +69,7 @@ const isLastStep = computed(() => {
 });
 
 const nextStep = () => {
-  if(currentStepIndex.value < steps.length - 1) {
+  if(currentStepIndex.value < (steps.length - 1)) {
     const nextStepPath = steps[currentStepIndex.value + 1];
     router.push(`/mutiStepForm/${nextStepPath}`);
   }
@@ -76,6 +81,28 @@ const prevStep = () => {
     router.push(`/mutiStepForm/${prevStepPath}`)
   }
 }
+
+const emptyValue = (index, objRef) => {
+  switch (index) {
+    case 0:
+      veryfPassNextStep.value = objRef.value.firstName !== '' && objRef.value.lastName !== '';
+      break;
+    case 1:
+      veryfPassNextStep.value = objRef.value.email !== '' && objRef.value.phone !== '';
+      break;
+    case 2:
+      veryfPassNextStep.value = objRef.value.address !== '' && objRef.value.city !== '';
+      break;
+  }
+};
+
+watch(() => currentStepIndex.value, (newValue) => {
+  emptyValue(newValue, formData);
+});
+
+watch(() => formData.value, (newValue) => {
+  emptyValue(currentStepIndex.value, formData);
+}, { deep: true });
 // function prevStep(){
 //   if(step.value > 0) step.value--;
 // }

@@ -1,12 +1,24 @@
 <template>
     <div class="flex flex-col gap-4">
       <h2 class="text-center font-bold text-2xl" >Step 4</h2>
-      <p>First Name: <input v-model="props.formValues.firstName"> </p>
-      <p>Last Name: <input v-model="props.formValues.lastName"></p>
-      <p>Email: <input v-model="props.formValues.email"> </p>
-      <p>Phone: <input v-model="props.formValues.phone"> </p>
-      <p>Address: <input v-model="props.formValues.address"> </p>
-      <p>City: <input v-model="props.formValues.city"> </p>
+      <div>
+        <label>First Name:</label>  <input v-model="props.formValues.firstName" disabled> 
+      </div>
+      <div>
+        <label>Last Name:</label>  <input v-model="props.formValues.lastName" disabled>
+      </div>
+      <div>
+        <label>Email:</label>  <input v-model="props.formValues.email" disabled> 
+      </div>
+      <div>
+        <label>Phone:</label>  <input v-model="props.formValues.phone" disabled> 
+      </div>
+      <div>
+        <label>Address:</label>  <input v-model="props.formValues.address" disabled>  
+      </div>
+      <div>
+        <label>City:</label>  <input v-model="props.formValues.city" disabled> 
+      </div>
     </div>
 
    
