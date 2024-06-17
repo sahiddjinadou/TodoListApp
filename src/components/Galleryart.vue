@@ -4,14 +4,14 @@
         <div class="flex justify-center items-center gap-5">
             <div class="flex justify-center items-center gap-5 ">
                 <button @click="navigateTo('galleryart')" class="border border-green-500 rounded-md py-1 px-2">Voitures</button>
-                <button @click="navigateTo('country')" class="border border-green-500 rounded-md py-1 px-2">Pays</button>
+                <!-- <button @click="navigateTo('country')" class="border border-green-500 rounded-md py-1 px-2">Pays</button> -->
                 <!-- <button @click="navigateTo('Motars')" class="border border-green-500 rounded-md py-1 px-2">Motars</button> -->
                 <!-- <button @click="navigateTo('githubUsers')" class="border border-green-500 rounded-md py-1 px-2">Utilisateurs github</button> -->
             </div>
 
             <div>
                 <input class="rounded-md text-center h-7" type="search" placeholder="Recherche..."
-                v-model="searchVal"> {{ searchVal }}
+                v-model="searchVal">
             </div>
         </div>
 
