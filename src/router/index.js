@@ -13,8 +13,8 @@ const router = createRouter({
             component: Galleryart,
             children: [
                 { 
-                    path: '/cars',
-                    component: () => import("@/components/CarsComponent.vue")
+                    path: '',
+                    component: () => import("@/components/CarsComponent.vue"),
                 },
                 { 
                     path: '/Motars',
@@ -27,7 +27,8 @@ const router = createRouter({
                 { 
                     path: '/githubUsers',
                     component: () => import("@/components/GithubUsersComponent.vue")
-                }
+                },
+                {path: '/show-car/:carId', component: () => import ("@/components/ShowCarComponent.vue")}
 
             ]
         },

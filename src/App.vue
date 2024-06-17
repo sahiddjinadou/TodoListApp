@@ -1,5 +1,6 @@
 <script setup>
 
+
 </script>
 <template>
   <div id="app">
@@ -20,8 +21,14 @@
     </nav>
     <!-- affichez le composant correspondant à l'itinéraire actif -->
     <router-view></router-view>
-</div></template>
-<style></style>
+</div>
+</template>
+
+<style scoped>
+.active  {
+  background-color: rgb(245, 205, 205);
+}
+</style>
 
 
 
