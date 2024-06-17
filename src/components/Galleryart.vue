@@ -3,9 +3,10 @@
     <div class="min-h-screen w-full content-center justify-center p-5 bg-gray-200">
         <div class="flex justify-center items-center gap-5">
             <div class="flex justify-center items-center gap-5 ">
-                <button class="border border-green-500 rounded-md py-1 px-2">Voitures</button>
-                <button class="border border-green-500 rounded-md py-1 px-2">Motars</button>
-                <button class="border border-green-500 rounded-md py-1 px-2">Animaux</button>
+                <button @click="navigateTo('cars')" class="border border-green-500 rounded-md py-1 px-2">Voitures</button>
+                <button @click="navigateTo('Motars')" class="border border-green-500 rounded-md py-1 px-2">Motars</button>
+                <button @click="navigateTo('country')" class="border border-green-500 rounded-md py-1 px-2">Pays</button>
+                <button @click="navigateTo('githubUsers')" class="border border-green-500 rounded-md py-1 px-2">Utilisateurs github</button>
             </div>
 
             <div>
@@ -13,79 +14,29 @@
                 v-model="searchVal">
             </div>
         </div>
-        <div class="grid grid-cols-4 gap-3">
-            <div v-for="car in filteredItems" :key="car.id" class="w-96 bg-white p-3">
-                <img class="h-52 w-full object-cover" :src="car.image"/>
-                <ul class="mt-3 flex flex-wrap">
-                    <li class="mr-auto">
-                        <a href="#" class="flex text-gray-400 hover:text-gray-600">
-                            <svg class="mr-0.5" style="width:24px;height:24px" viewBox="0 0 24 24">
-                                <path fill="currentColor"
-                                    d="M21,12L14,5V9C7,10 4,15 3,20C5.5,16.5 9,14.9 14,14.9V19L21,12Z" />
-                            </svg>
-                            1
-                        </a>
-                    </li>
-                    <p> {{ car.nom  }}</p>
-                    <li class="mr-2">
-                        <a href="#" class="flex text-gray-400 hover:text-gray-600">
-                            <svg class="mr-0.5" style="width:24px;height:24px" viewBox="0 0 24 24">
-                                <path fill="currentColor"
-                                    d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" />
-                            </svg>
-                            24
-                        </a>
-                    </li>
-                    <li class="mr-2">
-                        <a href="#" class="flex text-gray-400 hover:text-gray-600">
-                            <svg class="mr-0.5" style="width:24px;height:24px" viewBox="0 0 24 24">
-                                <path fill="currentColor"
-                                    d="M9,22A1,1 0 0,1 8,21V18H4A2,2 0 0,1 2,16V4C2,2.89 2.9,2 4,2H20A2,2 0 0,1 22,4V16A2,2 0 0,1 20,18H13.9L10.2,21.71C10,21.9 9.75,22 9.5,22V22H9Z" />
-                            </svg>
-                            3
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex text-gray-400 hover:text-gray-600">
-                            <svg class="mr-0.5" style="width:24px;height:24px" viewBox="0 0 24 24">
-                                <path fill="currentColor"
-                                    d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z" />
-                            </svg>
-                            3
-                        </a>
-                    </li>
-                </ul>
-            </div>
- </div>
+
+        <router-view></router-view>
     </div>
-    <div>
-      <h1>Liste des Voitures</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nom</th>
-            <th>Catégorie</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="car in filteredItems" :key="car.id">
-            <td>{{ car.id }}</td>
-            <td>{{ car.nom }}</td>
-            <td>{{ car.categorie }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+ 
 
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
-  
-    const searchVal = ref('')
+import { useRouter } from 'vue-router';
+import { ref, computed, onMounted } from 'vue';
+import { CarsService } from '@/service/Voitures'
+import { DataService } from '@/service/DataService'
 
-    
+
+const router = useRouter();
+
+const navigateTo = (route) => {
+  router.push(`/${route}`)
+}
+
+
+  const searchVal = ref('')
+
   // Définir les données pour les voitures
   const cars = ref([
     { id: 1, nom: 'Tesla Model S', categorie: 'Electrique', image:'../../public/img/Tesla_Model_S.webp'},
@@ -110,7 +61,7 @@ import { ref, computed } from 'vue';
     { id: 20, nom: 'Kia Sorento', categorie: 'SUV', image:'../../public/img/Kia_Sorento.jpg' }
   ]);
 
-
+    //Fonction de filtrage
     const filteredItems = computed(() => {
       const query = searchVal.value.toLowerCase();
       console.log(query);
@@ -119,6 +70,24 @@ import { ref, computed } from 'vue';
       );
     });
 
+    //juste un test
+    const carsService = new CarsService();
+    let country = ref([])
+    const dataService = new DataService()
+
+    const fetchCountyData = async () => {
+      try {
+          country.value = await dataService.getCountry();
+          console.log(country.value);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    onMounted(() => {
+      fetchCountyData();
+        // console.log(cars);
+    })
 
   </script>
   
