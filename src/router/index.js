@@ -14,7 +14,6 @@ const router = createRouter({
     history: createWebHistory(),
     routes: [
         { path: '/', component: TodoApp },
-        { path: '/galleryart', component: Galleryart },
         {
             path: '/mutiStepForm',
             component: StepNavigation,
@@ -41,7 +40,34 @@ const router = createRouter({
                     component: Step4
                 },
             ]
-        }
+        },
+       
+        { 
+            path: '/galleryart', 
+            component: Galleryart,
+            children: [
+                { 
+                    path: '',
+                    component: () => import("@/components/CarsComponent.vue"),
+                },
+                { 
+                    path: '/Motars',
+                    component: () => import("@/components/MotarsComponent.vue")
+                },
+                { 
+                    path: '/Country',
+                    component: () => import("@/components/CountryComponent.vue")
+                },
+                { 
+                    path: '/githubUsers',
+                    component: () => import("@/components/GithubUsersComponent.vue")
+                },
+                {path: '/show-car/:carId', component: () => import ("@/components/ShowCarComponent.vue")}
+
+            ]
+        },
+        { path: '/galleryart', component: Galleryart},
+        { path: '/mutiStepForm', component: StepNavigation}
     ]
 })
 export default router
