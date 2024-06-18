@@ -1,15 +1,29 @@
-import { ref, computed } from 'vue';
+import { reactive, computed } from 'vue';
 
 
 export default function useForm() {
 
-  const formData = ref({
+  const formData = reactive({
+    id: '',
     firstName: '',
     lastName: '',
     email: '',
     phone: '',
     address: '',
     city: '',
+    // image: null,
   });
-  return { formData};
+
+  //Réinitialisation des formData
+ const resetFormData = () => {
+  formData.firstName = '';
+  formData.lastName = '';
+  formData.email = '';
+  formData.phone = '';
+  formData.address = '';
+  formData.city = '';
+  // formData.image = null;
+ }
+
+ return { formData, resetFormData};
 };
