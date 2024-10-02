@@ -1,9 +1,13 @@
 <template>
     <!-- component -->
     <div class="min-h-screen w-full content-center justify-center p-5 bg-gray-200">
+        <div class="flex justify-center items-center gap-5">
+
+        </div>
         <div class="grid grid-cols-4 gap-3">
-            <div v-for="car in filteredItems" :key="car.id" class="w-96 bg-white p-3">
-                <img class="h-52 w-full object-cover" :src="car.image"/>
+            
+            <div v-for="(pays, index) in country" :key="index" class="w-96 bg-white p-3">
+                <img class="h-52 w-full object-cover" :src="pays.flags.png"/>
                 <ul class="mt-3 flex flex-wrap">
                     <li class="mr-auto">
                         <a href="#" class="flex text-gray-400 hover:text-gray-600">
@@ -14,16 +18,15 @@
                             1
                         </a>
                     </li>
-                    <p> {{ car.nom  }}</p>
+                    <p> {{ pays.name.official  }}</p>
                     <li class="mr-2">
-                      
-                        <RouterLink :to="'/show-car/'+car.id" class="flex text-gray-400 hover:text-gray-600">
+                        <a href="#" class="flex text-gray-400 hover:text-gray-600">
                             <svg class="mr-0.5" style="width:24px;height:24px" viewBox="0 0 24 24">
                                 <path fill="currentColor"
                                     d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" />
                             </svg>
                             24
-                        </RouterLink>
+                        </a>
                     </li>
                     <li class="mr-2">
                         <a href="#" class="flex text-gray-400 hover:text-gray-600">
@@ -45,83 +48,46 @@
                     </li>
                 </ul>
             </div>
-    </div>
-
+ </div>
     </div>
 
 
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue';
-import { useRouter } from 'vue-router';
-import { DataService } from '@/service/DataService';
+import { ref, computed, onMounted } from 'vue';
+import { CarsService } from '@/service/Voitures'
+import { DataService } from '@/service/DataService'
+    const searchVal = ref('')
 
-const router = useRouter();
-
-
-const props = defineProps({
-  researchVal: {
-    type: String,
-  }
-})
-
-
-console.log(props.researchVal);
-
-  
-  // Définir les données pour les voitures
-  // const cars = ref([
-  //   { id: 1, nom: 'Tesla Model S', categorie: 'Electrique', image:'../../public/img/Tesla_Model_S.webp'},
-  //   { id: 2, nom: 'BMW M3', categorie: 'Sport', image:'../../public/img/BMW_M3.jpg' },
-  //   { id: 3, nom: 'Audi A4', categorie: 'Berline', image:'../../public/img/Audi_A4.jfif' },
-  //   { id: 4, nom: 'Ford F-150', categorie: 'Camion', image:'../../public/img/Ford_F-150.jpg' },
-  //   { id: 5, nom: 'Chevrolet Corvette', categorie: 'Sport', image:'../../public/img/Chevrolet_Corvette.jfif' },
-  //   { id: 6, nom: 'Toyota Prius', categorie: 'Hybride', image:'../../public/img/Toyota_Prius.jpg' },
-  //   { id: 7, nom: 'Honda Civic', categorie: 'Compact', image:'../../public/img/Honda_Civic.jpg' },
-  //   { id: 8, nom: 'Jeep Wrangler', categorie: 'SUV', image:'../../public/img/Jeep_Wrangler.jpg' },
-  //   { id: 9, nom: 'Mercedes-Benz C-Class', categorie: 'Berline', image:'../../public/img/Mercedes-Benz_C-Class.jpg' },
-  //   { id: 10, nom: 'Lexus RX', categorie: 'SUV', image:'../../public/img/Lexus_RX.jpeg' },
-  //   { id: 11, nom: 'Nissan Leaf', categorie: 'Electrique', image:'../../public/img/Nissan_Leaf.jpg' },
-  //   { id: 12, nom: 'Porsche 911', categorie: 'Sport', image:'../../public/img/Porsche_911.jpg' },
-  //   { id: 13, nom: 'Subaru Outback', categorie: 'Wagon', image:'../../public/img/Subaru_Outback.webp' },
-  //   { id: 14, nom: 'Volkswagen Golf', categorie: 'Compact', image:'../../public/img/Volkswagen_Golf.jpg' },
-  //   { id: 15, nom: 'Volvo XC90', categorie: 'SUV', image:'../../public/img/Volvo_XC90.jpg' },
-  //   { id: 16, nom: 'Hyundai Elantra', categorie: 'Compact', image:'../../public/img/Hyundai_Elantra.jpg' },
-  //   { id: 17, nom: 'Mazda CX-5', categorie: 'SUV', image:'../../public/img/Mazda_CX-5.jpg' },
-  //   { id: 18, nom: 'Chevrolet Bolt', categorie: 'Electrique', image:'../../public/img/Chevrolet_Bolt.jpg' },
-  //   { id: 19, nom: 'Ford Mustang', categorie: 'Sport', image:'../../public/img/Ford_Mustang.jpg' },
-  //   { id: 20, nom: 'Kia Sorento', categorie: 'SUV', image:'../../public/img/Kia_Sorento.jpg' }
-  // ]);
-
-  const cars = ref([]);
-
-
+    
     //Fonction de filtrage
     const filteredItems = computed(() => {
-      const query = props.researchVal.toLowerCase();//On met la valeur de l'input en minuscule
-
+      const query = searchVal.value.toLowerCase();
+      console.log(query);
       return cars.value.filter(item =>
         item.nom.toLowerCase().includes(query)
       );
     });
 
     //juste un test
-    let data = ref([])
+    const carsService = new CarsService();
+    let country = ref([])
     const dataService = new DataService()
 
     const fetchCountyData = async () => {
       try {
-        data.value = await dataService.getCars();
-          // console.log(data.value);
+          country.value = await dataService.getCountry();
+          console.log(country.value);
       } catch (error) {
         console.log(error);
       }
     }
 
     onMounted(() => {
+      const cars = carsService.getCars();
       fetchCountyData();
-      console.log(cars.value);
+        // console.log(cars);
     })
 
   </script>

@@ -22,7 +22,7 @@ const router = createRouter({
                     component: () => import("@/components/MotarsComponent.vue")
                 },
                 { 
-                    path: '/Country',
+                    path: '/country',
                     component: () => import("@/components/CountryComponent.vue")
                 },
                 { 

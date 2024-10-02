@@ -1,65 +1,61 @@
 <template>
-    <!-- component -->
-    <div class="min-h-screen w-full content-center justify-center p-5 bg-gray-200">
-        <div class="flex justify-center items-center gap-5">
-
+    <div class="profile-container">
+      <header class="header">
+          <div class="flag-container">
+              <img :src="country[index]?.flags.png" :alt="country[index]?.flags.alt" class="profile-picture">
+          </div>
+        <h1>{{ country[index]?.name.official }}</h1>
+      </header>
+      
+      <div class="profile-content">
+        <div class="profile-sidebar h-[90vh] overflow-y-scroll mt-[150px]">
+            <h2>Liste des pays</h2>
+            <ul>
+              <li v-for="(pays, index) in country" :key="index">
+                <button @click="getSpecificCountry(index)" class="p-1 font-bold">{{ pays.name.common }}</button>
+              </li>
+            </ul>
         </div>
-        <div class="grid grid-cols-4 gap-3">
-            <div v-for="(pays, index) in country" :key="index" class="w-96 bg-white p-3">
-                <img class="h-52 w-full object-cover" :src="pays.flags.png"/>
-                <ul class="mt-3 flex flex-wrap">
-                    <li class="mr-auto">
-                        <a href="#" class="flex text-gray-400 hover:text-gray-600">
-                            <svg class="mr-0.5" style="width:24px;height:24px" viewBox="0 0 24 24">
-                                <path fill="currentColor"
-                                    d="M21,12L14,5V9C7,10 4,15 3,20C5.5,16.5 9,14.9 14,14.9V19L21,12Z" />
-                            </svg>
-                            1
-                        </a>
-                    </li>
-                    <p> {{ pays.name.official  }}</p>
-                    <li class="mr-2">
-                        <a href="#" class="flex text-gray-400 hover:text-gray-600">
-                            <svg class="mr-0.5" style="width:24px;height:24px" viewBox="0 0 24 24">
-                                <path fill="currentColor"
-                                    d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" />
-                            </svg>
-                            24
-                        </a>
-                    </li>
-                    <li class="mr-2">
-                        <a href="#" class="flex text-gray-400 hover:text-gray-600">
-                            <svg class="mr-0.5" style="width:24px;height:24px" viewBox="0 0 24 24">
-                                <path fill="currentColor"
-                                    d="M9,22A1,1 0 0,1 8,21V18H4A2,2 0 0,1 2,16V4C2,2.89 2.9,2 4,2H20A2,2 0 0,1 22,4V16A2,2 0 0,1 20,18H13.9L10.2,21.71C10,21.9 9.75,22 9.5,22V22H9Z" />
-                            </svg>
-                            3
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex text-gray-400 hover:text-gray-600">
-                            <svg class="mr-0.5" style="width:24px;height:24px" viewBox="0 0 24 24">
-                                <path fill="currentColor"
-                                    d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z" />
-                            </svg>
-                            3
-                        </a>
-                    </li>
-                </ul>
-            </div>
- </div>
+        
+        <div class="profile-main">
+          <div class="flex justify-between gap-10 p-2">
+              <section class="formation w-[50%]">
+                <div>
+                  <p><strong>Capitale: </strong><span>{{ country[index]?.capital[0] }}</span></p>
+                  <p><strong>Population: </strong><span>{{ country[index]?.population }}</span></p>
+                </div>
+              </section>
+              
+              <section class="competences w-[50%]">
+                <h3>Competences</h3>
+                <div v-for="skill in profile.skills" :key="skill.name" class="skill-bar">
+                  <span class="skill-name">{{ skill.name }}</span>
+                  <div class="skill-progress">
+                    <div class="skill-progress-bar" :style="{ width: `${skill.level}%` }"></div>
+                  </div>
+                  <span class="skill-percentage">{{ skill.level }}%</span>
+                </div>
+              </section>
+          </div>
+          
+          <section class="a-propos">
+            <h3>A propos</h3>
+            <p>{{ profile.about }}</p>
+          </section>
+        </div>
+      </div>
+      
     </div>
+  </template>
+  
+  <script setup>
+    import { reactive, watch } from 'vue'
+    import { ref, computed, onMounted } from 'vue';
+    import { DataService } from '@/service/DataService';
 
 
-</template>
-
-<script setup>
-import { ref, computed, onMounted } from 'vue';
-import { CarsService } from '@/service/Voitures'
-import { DataService } from '@/service/DataService'
-    const searchVal = ref('')
-
-    
+    const searchVal = ref('');
+    let index = ref(0);
     //Fonction de filtrage
     const filteredItems = computed(() => {
       const query = searchVal.value.toLowerCase();
@@ -69,8 +65,6 @@ import { DataService } from '@/service/DataService'
       );
     });
 
-    //juste un test
-    const carsService = new CarsService();
     let country = ref([])
     const dataService = new DataService()
 
@@ -83,27 +77,142 @@ import { DataService } from '@/service/DataService'
       }
     }
 
+    function getSpecificCountry(i) {
+        index.value = i;
+        console.log(index.value);
+    }
+    let arrayPopulation = country.value.map(el => el.population -1);
+    let sumPopulation = country.value.reduce((acc, curr) => acc + curr, 0);
+
+    console.log(sumPopulation);
+    console.log(arrayPopulation);
     onMounted(() => {
-      const cars = carsService.getCars();
       fetchCountyData();
-        // console.log(cars);
     })
 
+  const profile = reactive({
+    name: 'MESSIBATOR Anatol Bertrand',
+    title: 'Développeur fullStack',
+    image: 'path/to/profile-image.jpg',
+    email: 'messi.anatol@gmail.com',
+    phone: '+229 66739946',
+    location: 'Abomey-Calavi',
+    socialMedia: ['facebook', 'instagram', 'youtube'],
+    education: [
+      'Obtention du bac en 1974',
+      'Obtention du Bepc en 1970',
+      'Obtention du cep en 1965',
+      'Obtention du bac en 1974',
+      'Obtention du Bepc en 1970',
+      'Obtention du cep en 1965'
+    ],
+    skills: [
+      { name: 'Laravel', level: 86 },
+      { name: 'VueJS', level: 69 },
+      { name: 'Python', level: 56 },
+      { name: 'Angular', level: 45 }
+    ],
+    about: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus esse in, ex tempore quasi eveniet quo? Tempora, explicabo. Aliquam voluptatem praesentium quaerat fugit rerum? Repellat, ut ex molestiae illum reiciendis sint ea vel delectus perspiciatis quod, consectetur tempore voluptatum dolor qui ullam dolorum? Ratione rerum quisquam, inventore perferendis cumque eos tenetur veritatis doloremque provident optio voluptatibus delectus incidunt est non officia corrupti sit dolorem autem rem? Similique, nostrum enim saepe hic, voluptatibus reprehenderit obcaecati laborurn nihil sed possimus repellendus vero ab consectetur perferendis veniam esse delectus voluptatum dolore nesciunt. Quae nam impedit molestiae dolor, eaque ad asperiores iusto fugiat laboriosam dolore praesentium beatae, cupiditate optio soluta, perspiciatis non alias nemo dolores! Voluptas ut error libero mollitia omnis consectetur voluptates ex, saepe sed officia impedit excepturi!'
+  })
+  
+  const handleNext = () => {
+    console.log('Next button clicked')
+    // Add your logic for the next action here
+  }
   </script>
   
   <style scoped>
-  table {
+  .profile-container {
+    font-family: Arial, sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #f0f0f0;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    height: 250px;
+    background: linear-gradient(to right, #4CAF50, #044e08);
+    color: white;
+    font-weight: bolder;
+    font-size: 3em;
+  }
+  .header h1 {
+    margin-block: 2em;
+    margin-inline:4em;
+  }
+
+  .flag-container {
+    width: 300px;
+    height: 250px;
+  }
+  .flag-container img {
+    position: relative;
+    top: 100px;
+    left: 100px;
+    border-radius: 5%;
+  }
+  
+  .profile-content {
+    display: flex;
+    padding: 20px;
+  }
+  
+  .profile-sidebar {
+    flex: 1;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-right: 20px;
+  }
+  
+  .profile-picture {
     width: 100%;
-    border-collapse: collapse;
+    height: 250px;
+    /* border-radius: 50%; */
+    /* object-fit: cover; */
   }
   
-  th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
+  .profile-main {
+    flex: 2;
   }
   
-  th {
-    background-color: #f2f2f2;
-    text-align: left;
+  .formation, .competences, .a-propos {
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+  }
+  
+  .skill-bar {
+    margin-bottom: 10px;
+  }
+  
+  .skill-progress {
+    background-color: #e0e0e0;
+    height: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .skill-progress-bar {
+    height: 100%;
+    background-color: #4CAF50;
+  }
+  
+  .suivant-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    float: right;
+    margin-top: 20px;
+  }
+  
+  @media screen and () {
+    
   }
   </style>
